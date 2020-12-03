@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meal/models/meal.dart';
-import 'package:meal/screens/meal_detailScreen.dart';
+
+import '../screens/meal_detail_screen.dart';
+import '../models/meal.dart';
 
 class MealItem extends StatelessWidget {
   final String id;
@@ -10,56 +11,57 @@ class MealItem extends StatelessWidget {
   final Complexity complexity;
   final Affordability affordability;
 
-  const MealItem(
-      {Key key,
-      @required this.id,
+  MealItem(
+      {@required this.id,
       @required this.title,
       @required this.imageUrl,
-      @required this.duration,
+      @required this.affordability,
       @required this.complexity,
-      @required this.affordability})
-      : super(key: key);
+      @required this.duration,});
 
-  String get comlexityText {
+  String get complexityText {
     switch (complexity) {
       case Complexity.Simple:
-        return 'simple';
+        return 'Simple';
         break;
       case Complexity.Challenging:
-        return 'challenging';
+        return 'Challenging';
         break;
       case Complexity.Hard:
-        return 'hard';
+        return 'Hard';
         break;
       default:
-        return 'unknown';
+        return 'Unknown';
     }
   }
 
   String get affordabilityText {
     switch (affordability) {
       case Affordability.Affordable:
-        return 'affordable';
-        break;
-      case Affordability.Luxurious:
-        return 'luxurious';
+        return 'Affordable';
         break;
       case Affordability.Pricey:
-        return 'pricey';
+        return 'Pricey';
+        break;
+      case Affordability.Luxurious:
+        return 'Expensive';
         break;
       default:
-        return 'unknown';
+        return 'Unknown';
     }
   }
 
   void selectMeal(BuildContext context) {
-    Navigator.of(context).pushNamed(
-      MealDetailsScreen.routeName, 
-      arguments: id).then((result){
-        if(result != null){
-          // removeItem(result);
-        }
-      } );
+    Navigator.of(context)
+        .pushNamed(
+      MealDetailScreen.routeName,
+      arguments: id,
+    )
+        .then((result) {
+      if (result != null) {
+        // removeItem(result);
+      }
+    });
   }
 
   @override
@@ -72,65 +74,88 @@ class MealItem extends StatelessWidget {
         ),
         elevation: 4,
         margin: EdgeInsets.all(10),
-        child: Column(children: <Widget>[
-          Stack(children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-              child: Image.network(
-                imageUrl,
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Positioned(
-              bottom: 20,
-              right: 10,
-              child: Container(
-                width: 320,
-                color: Colors.black54,
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                child: Text(
-                  title,
-                  style: TextStyle(fontSize: 26, color: Colors.white),
-                  softWrap: true,
-                  overflow: TextOverflow.fade,
+        child: Column(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                  child: Image.network(
+                    imageUrl,
+                    height: 250,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-            )
-          ]),
-          Padding(
+                Positioned(
+                  bottom: 20,
+                  right: 10,
+                  child: Container(
+                    width: 300,
+                    color: Colors.black54,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 5,
+                      horizontal: 20,
+                    ),
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 26,
+                        color: Colors.white,
+                      ),
+                      softWrap: true,
+                      overflow: TextOverflow.fade,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Padding(
               padding: EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Icon(Icons.schedule),
-                      SizedBox(width: 6),
+                      Icon(
+                        Icons.schedule,
+                      ),
+                      SizedBox(
+                        width: 6,
+                      ),
                       Text('$duration min'),
                     ],
                   ),
                   Row(
                     children: <Widget>[
-                      Icon(Icons.work),
-                      SizedBox(width: 6),
-                      Text(comlexityText),
+                      Icon(
+                        Icons.work,
+                      ),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text(complexityText),
                     ],
                   ),
                   Row(
                     children: <Widget>[
-                      Icon(Icons.attach_money),
-                      SizedBox(width: 6),
+                      Icon(
+                        Icons.attach_money,
+                      ),
+                      SizedBox(
+                        width: 6,
+                      ),
                       Text(affordabilityText),
                     ],
                   ),
                 ],
-              )),
-        ]),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
